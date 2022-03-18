@@ -27,9 +27,9 @@ function isValidDate(d) {
 axios
   .get("https://raw.githubusercontent.com/sportstimes/f1/main/_db/f1/2022.json")
   .then((res) => {
-    console.log(res);
+    //console.log(res);
     calendar = res.data.races;
-    console.log(calendar);
+    //console.log(calendar);
     updateDate();
 
   });
@@ -64,7 +64,7 @@ function updateDate() {
     data[0][1].push(gp.longitude)
     data[0][1].push(.05)
 
-    console.log(gp);
+    //console.log(gp);
 
     markers.push(cell);
   }
@@ -92,7 +92,7 @@ function updateDate() {
       currentGP = calendar[i];
 
       for (let key in currentGP.sessions) {
-        console.log(key);
+        //console.log(key);
         timers.push({
           name: key,
           date: new Date(currentGP.sessions[key]),
@@ -120,19 +120,18 @@ function showRemaining() {
 
     var distance = timers[i].date - now;
     if (distance < 0) {
-      clearInterval(timer);
       docElement.innerHTML = "EXPIRED!";
-      return;
-    }
-    var days = Math.floor(distance / _day);
-    var hours = Math.floor((distance % _day) / _hour);
-    var minutes = Math.floor((distance % _hour) / _minute);
-    var seconds = Math.floor((distance % _minute) / _second);
+      } else {
+      var days = Math.floor(distance / _day);
+      var hours = Math.floor((distance % _day) / _hour);
+      var minutes = Math.floor((distance % _hour) / _minute);
+      var seconds = Math.floor((distance % _minute) / _second);
 
-    docElement.innerHTML = " " + days + ":";
-    docElement.innerHTML += hours + ":";
-    docElement.innerHTML += minutes + ":";
-    docElement.innerHTML += seconds + "";
+      docElement.innerHTML = " " + days + ":";
+      docElement.innerHTML += hours + ":";
+      docElement.innerHTML += minutes + ":";
+      docElement.innerHTML += seconds + "";
+      }
   }
 }
 
