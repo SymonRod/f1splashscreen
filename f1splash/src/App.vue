@@ -5,33 +5,33 @@ let races = ref({})
 let currentRace = ref({})
 
 
-onMounted( async () => {
+onMounted(async () => {
   let response = await fetch("https://raw.githubusercontent.com/sportstimes/f1/main/_db/f1/2022.json")
 
   races.value = await response.json()
 
   var now = new Date()
 
-  for(var race of races.value.races) {
+  for (var race of races.value.races) {
 
     var gp = new Date(race.sessions.gp)
 
 
-    if(gp.getTime()-now.getTime() > 0) {
+    if (gp.getTime() - now.getTime() > 0) {
 
-      for(let key in race.sessions) {
-        race.sessions[key] = new Date(race.sessions[key])  
+      for (let key in race.sessions) {
+        race.sessions[key] = new Date(race.sessions[key])
       }
       currentRace.value = race;
-      currentRace.value.slug = currentRace.value.slug.replaceAll("-"," ")
+      currentRace.value.slug = currentRace.value.slug.replaceAll("-", " ")
 
-      break; 
+      break;
     }
 
   }
 
 
-  
+
 })
 
 </script>
@@ -42,11 +42,67 @@ onMounted( async () => {
     <h1>
       {{ currentRace.slug }}
     </h1>
-    {{ currentRace.sessions.gp }}
-    {{ currentRace.sessions.gp }}
-    {{ currentRace.sessions.gp }}
+
+    <table>
+      <tr>
+        <td>
+          <h2 style="margin-right: 20px;">Gran Prix</h2>
+        </td>
+        <td>
+          <Countdown :deadlineDate="currentRace.sessions.gp" :showLabels="false" mainColor="orange"></Countdown>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 style="margin-right: 20px;">Qualifying</h2>
+        </td>
+        <td>
+          <Countdown :deadlineDate="currentRace.sessions.qualifying" :showLabels="false" mainColor="orange"></Countdown>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 style="margin-right: 20px;">Fp3</h2>
+        </td>
+        <td>
+          <Countdown :deadlineDate="currentRace.sessions.fp1" :showLabels="false" mainColor="orange"></Countdown>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 style="margin-right: 20px;">Fp2</h2>
+        </td>
+        <td>
+          <Countdown :deadlineDate="currentRace.sessions.fp2" :showLabels="false" mainColor="orange"></Countdown>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 style="margin-right: 20px;">Fp3</h2>
+        </td>
+        <td>
+          <Countdown :deadlineDate="currentRace.sessions.fp3" :showLabels="false" mainColor="orange"></Countdown>
+        </td>
+      </tr>
+
+    </table>
   </div>
 </template>
+
+<script>
+import { Countdown } from 'vue3-flip-countdown'
+
+export default {
+  name: 'App',
+  components: {
+    Countdown
+  }
+}
+</script>
 
 <style>
 body {
@@ -59,6 +115,16 @@ body {
   align-items: center;
 
   margin: 0;
+}
+
+h1 {
+  margin: 20px;
+}
+
+td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 h1 {
@@ -80,6 +146,6 @@ h1 {
 }
 
 #gpName {
-  text-transform: capitalize;  
+  text-transform: capitalize;
 }
 </style>
